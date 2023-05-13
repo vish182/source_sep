@@ -1,0 +1,5 @@
+source /media/vishu/DATA/demucsvenv/bin/activate
+
+demucs --two-stems=other myfile.mp3
+
+ffmpeg -i input.mp3 -ss 10 -t 6 -acodec copy output.mp3
