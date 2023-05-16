@@ -24,6 +24,20 @@ def get_length(input_video):
 
 @app.route('/seperate', methods=["POST"])
 def separate():
+    _json = request.json
+    print("POST body: ",_json)
+
+    start = _json['start']
+    end = _json['end']
+    print("clip audio", start, "-",end)
+
+    result = subprocess.run(["ffmpeg -i {} -ss {} -t {} -acodec copy {}".format(filename, start, end-start, output)], shell=True, capture_output=True, text=True)
+
+    print("rename")
+
+    result = subprocess.run(["rm {}".format(filename)], shell=True, capture_output=True, text=True)
+    result = subprocess.run(["mv {} {}".format(output, filename)], shell=True, capture_output=True, text=True)
+
     result = subprocess.run(["ffmpeg -i {} -acodec pcm_s16le -ac 1 -ar 16000 {}".format(filename, output)], shell=True, capture_output=True, text=True)
     print(result.stdout)
 
